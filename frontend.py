@@ -7,7 +7,7 @@ def request_no():
     response_json = response.json()                        
     return response_json["reason"]                          
  
-#Initialisierung
+
 if "text1" not in st.session_state:
     st.session_state["text1"] = request_no()
 
@@ -35,7 +35,7 @@ name = st.text_input("Name")
 st.write(name)
 
 
-# ---------- Notizen-API ----------
+
 NOTES_API = "http://127.0.0.1:8000"                         
 
 
@@ -63,7 +63,6 @@ if st.button("Alle Notizen anzeigen"):
 if st.button("Neue Notiz erstellen"):                       
     st.session_state["show_form"] = True
 
-# Liste anzeigen, sobald sie einmal geladen wurde
 if "notes_list" in st.session_state:
     for note in st.session_state["notes_list"]:
         with st.expander(note["title"]):
@@ -73,7 +72,6 @@ if "notes_list" in st.session_state:
             st.write(f"**Tags:** {tag_str}")
             st.caption(f"id={note['id']} · {note['created_at']}")
 
-# Formular anzeigen, solange show_form gesetzt ist
 if st.session_state.get("show_form"):
     with st.form("new_note_form", clear_on_submit=True):
         new_title = st.text_input("Titel")
@@ -93,3 +91,5 @@ if st.session_state.get("show_form"):
                 st.error(f"Fehler {response.status_code}: {detail}")
         except requests.exceptions.ConnectionError:
             st.error("Backend nicht erreichbar - läuft uvicorn auf Port 8000?")
+
+          
