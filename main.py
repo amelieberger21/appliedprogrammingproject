@@ -95,6 +95,86 @@ def get_student():
     }
 
 
+@app.get("/students")
+def get_students():
+    """Get list of all students"""
+    students = [
+        {
+            "id": 1,
+            "name": "Amelie Berger",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 2,
+            "name": "Roman",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 3,
+            "name": "Max Müller",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 4,
+            "name": "Sarah Schmidt",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        }
+    ]
+    return students
+
+
+@app.get("/students/{student_id}")
+def get_student_by_id(student_id: int):
+    """Get a specific student by ID"""
+    students = [
+        {
+            "id": 1,
+            "name": "Amelie Berger",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 2,
+            "name": "Roman",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 3,
+            "name": "Max Müller",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        },
+        {
+            "id": 4,
+            "name": "Sarah Schmidt",
+            "semester": 1,
+            "course": "Wirtschaftsinformatik",
+            "university": "Hochschule Coburg"
+        }
+    ]
+    
+    for student in students:
+        if student["id"] == student_id:
+            return student
+    
+    raise HTTPException(
+        status_code=404,
+        detail=f"Student with ID {student_id} not found"
+    )
+
+
 # ===== Square Calculator Endpoint (Hausaufgabe) =====
 @app.get("/square/{number}")
 def calculate_square(number: int):
