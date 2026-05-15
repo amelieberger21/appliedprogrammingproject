@@ -5,14 +5,12 @@ import json
 from pathlib import Path
 from typing import Optional
 
-# ===== FastAPI App =====
 app = FastAPI(
     title="Note Taking API",
     description="Simple note management system",
     version="1.0.0"
 )
 
-# ===== Models =====
 class NoteCreate(BaseModel):
     title: str = Field(..., min_length=3, max_length=100)
     content: str = Field(..., min_length=1, max_length=10000)
@@ -24,7 +22,6 @@ class Note(NoteCreate):
     created_at: str
 
 
-# ===== Global Variables =====
 NOTES_FILE = Path("data/notes.json")
 ALLOWED_CATEGORIES = {"work", "personal", "school", "ideas", "general"}
 
@@ -32,11 +29,10 @@ notes_db: list[Note] = []
 note_id_counter: int = 1
 
 
-# ===== Helper Functions =====
 def load_notes() -> tuple[list[Note], int]:
     """Load notes from JSON file and return notes list and next ID counter"""
     global notes_db, note_id_counter
-    
+
     notes_db = []
     note_id_counter = 1
 
@@ -45,7 +41,6 @@ def load_notes() -> tuple[list[Note], int]:
             data = json.load(f)
             notes_db = [Note(**note) for note in data]
 
-            # Set counter to max ID + 1
             if notes_db:
                 note_id_counter = max(note.id for note in notes_db) + 1
 
@@ -54,20 +49,16 @@ def load_notes() -> tuple[list[Note], int]:
 
 def save_notes(notes: list[Note]) -> None:
     """Save notes to JSON file after each change"""
-    # Ensure data directory exists
     NOTES_FILE.parent.mkdir(parents=True, exist_ok=True)
 
     with open(NOTES_FILE, 'w', encoding='utf-8') as f:
-        # Convert Note objects to dicts
         notes_data = [note.model_dump() for note in notes]
         json.dump(notes_data, f, indent=2, ensure_ascii=False)
 
 
-# ===== Load notes on startup =====
 notes_db, note_id_counter = load_notes()
 
 
-# ===== Root Endpoints =====
 @app.get("/")
 def read_root():
     """Root endpoint"""
@@ -164,18 +155,17 @@ def get_student_by_id(student_id: int):
             "university": "Hochschule Coburg"
         }
     ]
-    
+
     for student in students:
         if student["id"] == student_id:
             return student
-    
+
     raise HTTPException(
         status_code=404,
         detail=f"Student with ID {student_id} not found"
     )
 
 
-# ===== Square Calculator Endpoint (Hausaufgabe) =====
 @app.get("/square/{number}")
 def calculate_square(number: int):
     """Calculate the square of a number"""
@@ -187,7 +177,6 @@ def calculate_square(number: int):
     }
 
 
-# ===== Notes Endpoints =====
 @app.get("/notes")
 def list_notes(category: Optional[str] = None) -> list[Note]:
     """Get a list of all notes, optionally filtered by category"""
@@ -199,7 +188,7 @@ def list_notes(category: Optional[str] = None) -> list[Note]:
                 detail=f"Invalid category. Allowed: {sorted(ALLOWED_CATEGORIES)}"
             )
         return [note for note in notes_db if note.category.lower() == category]
-    
+
     return notes_db
 
 
@@ -207,14 +196,13 @@ def list_notes(category: Optional[str] = None) -> list[Note]:
 def create_note(note: NoteCreate) -> Note:
     """Create a new note"""
     global note_id_counter, notes_db
-    
-    # Validate category
+
     if note.category.lower() not in ALLOWED_CATEGORIES:
         raise HTTPException(
             status_code=400,
             detail=f"Invalid category. Allowed: {sorted(ALLOWED_CATEGORIES)}"
         )
-    
+
     new_note = Note(
         id=note_id_counter,
         title=note.title,
@@ -222,11 +210,11 @@ def create_note(note: NoteCreate) -> Note:
         category=note.category.lower(),
         created_at=datetime.now().isoformat()
     )
-    
+
     notes_db.append(new_note)
     note_id_counter += 1
     save_notes(notes_db)
-    
+
     return new_note
 
 
@@ -236,7 +224,7 @@ def get_note(note_id: int) -> Note:
     for note in notes_db:
         if note.id == note_id:
             return note
-    
+
     raise HTTPException(
         status_code=404,
         detail=f"Note with ID {note_id} not found"
@@ -246,13 +234,12 @@ def get_note(note_id: int) -> Note:
 @app.put("/notes/{note_id}")
 def update_note(note_id: int, note_update: NoteCreate) -> Note:
     """Update an existing note"""
-    # Validate category
     if note_update.category.lower() not in ALLOWED_CATEGORIES:
         raise HTTPException(
             status_code=400,
             detail=f"Invalid category. Allowed: {sorted(ALLOWED_CATEGORIES)}"
         )
-    
+
     for i, note in enumerate(notes_db):
         if note.id == note_id:
             updated_note = Note(
@@ -265,7 +252,7 @@ def update_note(note_id: int, note_update: NoteCreate) -> Note:
             notes_db[i] = updated_note
             save_notes(notes_db)
             return updated_note
-    
+
     raise HTTPException(
         status_code=404,
         detail=f"Note with ID {note_id} not found"
@@ -276,13 +263,13 @@ def update_note(note_id: int, note_update: NoteCreate) -> Note:
 def delete_note(note_id: int):
     """Delete a note by ID"""
     global notes_db
-    
+
     for i, note in enumerate(notes_db):
         if note.id == note_id:
             notes_db.pop(i)
             save_notes(notes_db)
             return
-    
+
     raise HTTPException(
         status_code=404,
         detail=f"Note with ID {note_id} not found"
