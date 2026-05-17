@@ -298,32 +298,15 @@ Die Hausaufgabe ist das schreiben 8 weiterer Tests für die bestehenden Notes-AP
 ### Day 9
 
 #### 1. ✅ What did I accomplish?
-
-
-
-
-
-
----
+Am letzten Tag habe ich das Projekt nochmals überprüft und zusammengefasst. Ich habe den Backend-Server getestet, das Frontend gestartet und kontrolliert, dass alle Informationen in `README.md` und `work-log.md` vollständig dokumentiert sind.
 
 #### 2. 🚧 What challenges did I face?
-
-
-
-
-
-
----
+Die größte Herausforderung war, den Überblick zu behalten und sicherzustellen, dass alle Dateien auf GitHub verfügbar sind. Zudem musste ich prüfen, ob der lokale Git-Status mit dem Remote-Branch übereinstimmt.
 
 #### 3. 💡 How did I overcome them?
-
-
-
-
-
+Ich habe die Git-Befehle `git status`, `git log` und `git push` verwendet und auf GitHub nachgesehen, ob die Änderungen sichtbar sind. Am Ende war der ganze Projekt-Stand auf `origin/main` synchronisiert.
 
 ---
-
 
 # 🎉 Congratulations! You did it! 🎓✨
 
