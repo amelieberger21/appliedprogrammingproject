@@ -1,6 +1,6 @@
 # Work Log
 
-**Amelie:** 
+**Amelie Berger:** 
 
 Instructions: Fill out one log for each course day. Content to consider: Course Sessions + Assignment
 
@@ -329,6 +329,7 @@ Die KI in VS Code hat ihr monatliches Chat Messages Quota Limit erricht.
 ---
 
 #### 3. 💡 How did I overcome them?
+Ein neues Work-Log.md-Dokument erstellt und alles in dieses neue Dokument kopiert.
 
 
 
