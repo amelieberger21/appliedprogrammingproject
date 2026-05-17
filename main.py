@@ -676,3 +676,18 @@ def partial_update_note(note_id: int, note_update: NoteUpdate, session: SessionD
         created_at=note.created_at.isoformat()
     )
 
+@app.get("/queryparameters")
+def query_parameters(param1: str = None, param2: int = None) -> dict:
+    namen = ['amelie', 'roman', 'sophia', 'martin', 'nick', 'artemas', 'janeausten', 'apored', 'vera']
+    if not param1:
+        return{"namen": namen}
+    
+    namen_gefiltert = []
+    for name in namen:
+        if param1 is None or param1 in name:
+            namen_gefiltert.append(name)
+
+    return 
+    {"param1": param1,
+        "param2": param2,
+        "namen": namen_gefiltert}
